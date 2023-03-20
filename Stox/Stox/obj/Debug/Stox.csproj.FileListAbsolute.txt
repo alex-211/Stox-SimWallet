@@ -1,0 +1,11 @@
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.exe.config
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.exe
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.pdb
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.AssemblyReference.cache
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.SuggestedBindingRedirects.cache
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.Form1.resources
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.Properties.Resources.resources
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.GenerateResource.cache
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.CoreCompileInputs.cache
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe
+C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
