@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using CsvHelper;
+
 namespace Stox
 {
     public partial class Form1 : Form
@@ -15,6 +17,13 @@ namespace Stox
         public Form1()
         {
             InitializeComponent();
+        }
+        public class foo
+        {
+            public int Date { get; set; }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
