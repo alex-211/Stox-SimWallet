@@ -40,7 +40,7 @@ namespace Stox
 
                 foreach (var record in appl)
                 {
-                    LSTdebug.Items.Add(appl); // returns "Raccolta" so we don't know if it works or not
+                    LSTdebug.Items.Add(record.Date + " " + record.Open + " " + record.High + " " + record.Low + " " + record.Close + " " + " Adj Close unavailable " + record.Volume);
                 }
             }
         }
@@ -55,11 +55,6 @@ namespace Stox
             public string Close { get; set; }
 //          public string Adj { get; set; } --This is giving an exception, since the header has a space in it and it won't recognise it
             public string Volume { get; set; }
-        }
-
-        private void BTdebug_Click(object sender, EventArgs e)
-        {
-            // delete this control
         }
     }
 }
