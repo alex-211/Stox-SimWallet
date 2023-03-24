@@ -42,8 +42,20 @@ namespace Stox
 
                 foreach (var record in appl)
                 {
+                    //visualizzazione debug 'listbox'
                     LSTdebug.Items.Add(record.Date + " " + record.Open + " " + record.High + " " + record.Low + " " + record.Close + " " + record.Adj_close + " " + record.Volume);
+
+                    //Creazione tabella 'listview' *migliorabile
+                    ListViewItem item = new ListViewItem(record.Date);
+                    item.SubItems.Add(record.Open);
+                    item.SubItems.Add(record.High);
+                    item.SubItems.Add(record.Low);
+                    item.SubItems.Add(record.Close);
+                    item.SubItems.Add(record.Adj_close);
+                    item.SubItems.Add(record.Volume);
+                    listView.Items.Add(item);
                 }
+                
             }
         }
 
