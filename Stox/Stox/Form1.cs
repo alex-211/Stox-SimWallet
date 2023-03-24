@@ -14,6 +14,8 @@ using System.Net;
 using System.IO;
 using System.Globalization;
 
+using CsvHelper.Configuration.Attributes; // Questo serve a dare dei nomi custom agli header (es. vedi righa 59) 
+
 
 namespace Stox
 {
@@ -40,7 +42,7 @@ namespace Stox
 
                 foreach (var record in appl)
                 {
-                    LSTdebug.Items.Add(record.Date + " " + record.Open + " " + record.High + " " + record.Low + " " + record.Close + " " + " Adj Close unavailable " + record.Volume);
+                    LSTdebug.Items.Add(record.Date + " " + record.Open + " " + record.High + " " + record.Low + " " + record.Close + " " + record.Adj_close + " " + record.Volume);
                 }
             }
         }
@@ -53,7 +55,9 @@ namespace Stox
             public string High { get; set; }
             public string Low { get; set; }
             public string Close { get; set; }
-//          public string Adj { get; set; } --This is giving an exception, since the header has a space in it and it won't recognise it
+
+            [Name("Adj Close")]
+            public string Adj_close { get; set; }
             public string Volume { get; set; }
         }
     }
