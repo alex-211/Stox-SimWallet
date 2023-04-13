@@ -22,6 +22,11 @@ namespace Stox
 {
     public partial class Form1 : Form
     {
+        // AGUS NON TOGLIERE PUBLIC CHE SE NO SI ROMPE IL FORM2!! 
+        public const int maxv = 100;
+        public string[] ticker = new string[maxv];
+        public DateTime[] dataAcquisto = new DateTime[maxv];
+        public int nv = 0;
         public Form1()
         {
             InitializeComponent();
@@ -29,6 +34,10 @@ namespace Stox
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Hide();
+            login login = new login();
+            login.ShowDialog();
+            // potrebbe essere migliorato
 
         }
 
@@ -86,6 +95,12 @@ namespace Stox
                 }
 
             }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // save program date on form closing
+
         }
     }
 }
