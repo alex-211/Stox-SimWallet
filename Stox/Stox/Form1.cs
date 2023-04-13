@@ -48,12 +48,18 @@ namespace Stox
 
         private void BTrequest_Click(object sender, EventArgs e)
         {
+            // Ottieni data di oggi e convertila in unix timestamp per usarla nella query di Yahoo -- Spiegazione dettagliata su commit di GitHub
+            DateTime today = DateTime.Now;
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            int period1 = (int)yesterday.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            int period2 = (int)today.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            
 //          listView.Clear(); -- sembra non funzionare, fa il clear delle colonne (non solo dei dati) e quindi non permette ai nuovi dati di essere inseriti
 //          ColLWLow.cle -- per le colonne non c'è un metodo .Clear
 
             // Create a web client to request the CSV data
             var client = new WebClient();
-            var DataStream = client.OpenRead("https://query1.finance.yahoo.com/v7/finance/download/"+CBrequest.Text+"?period1=1581498323&period2=1613120723&interval=1d&events=history&includeAdjustedClose=true");
+            var DataStream = client.OpenRead("https://query1.finance.yahoo.com/v7/finance/download/"+CBrequest.Text+"?period1=" + period1 + "&period2="+ period2 +"&interval=1d&events=history&includeAdjustedClose=true");
 
             // Create a reader for CSVhelper
             var reader = new CsvReader(new StreamReader(DataStream), CultureInfo.InvariantCulture);
