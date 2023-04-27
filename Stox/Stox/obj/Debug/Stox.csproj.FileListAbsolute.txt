@@ -93,3 +93,4 @@ C:\Users\Alessandro\Documents\GitHub\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csp
 C:\Users\Alessandro\Documents\GitHub\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.CopyComplete
 C:\Users\Alessandro\Documents\GitHub\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe
 C:\Users\Alessandro\Documents\GitHub\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
+C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.login.resources

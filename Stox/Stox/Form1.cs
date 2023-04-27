@@ -26,6 +26,7 @@ namespace Stox
         public const int maxv = 100;
         public string[] ticker = new string[maxv];
         public DateTime[] dataAcquisto = new DateTime[maxv];
+        public float[] prezzoAcquisto = new float[maxv];
         public int nv = 0;
         public Form1()
         {
@@ -34,11 +35,7 @@ namespace Stox
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Hide();
-            login login = new login();
-            login.ShowDialog();
-            // potrebbe essere migliorato
-
+            // Si può togliere questa function?
         }
 
         // creates a class that splits the csv data 
@@ -99,8 +96,21 @@ namespace Stox
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // save program date on form closing
+            // save program data on form closing
+            //C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet -- va cambiato per ogni pc (fixare)
+            // da testare
 
+            string csv_ticker = string.Join(",", ticker);
+            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-ticker.csv", csv_ticker);
+
+            string csv_dateAcquisto = string.Join(",", dataAcquisto);
+            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-dateAcquisto.csv", csv_dateAcquisto);
+
+            string csv_prezzoAcquisto = string.Join(",", prezzoAcquisto);
+            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-prezzoAcquisto.csv", csv_prezzoAcquisto);
+
+            string csv_nv = string.Join(",", nv);
+            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-nv.csv", csv_nv);
         }
     }
 }
