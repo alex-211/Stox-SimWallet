@@ -96,21 +96,47 @@ namespace Stox
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+
+        }
+
+        private void BTclosing_Click(object sender, EventArgs e)
+        {
             // save program data on form closing
-            //C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet -- va cambiato per ogni pc (fixare)
-            // da testare
+            // tira svariate eccezzioni e io tiro svariate bestemmie
 
-            string csv_ticker = string.Join(",", ticker);
-            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-ticker.csv", csv_ticker);
+            string folder_path = "";
+            string nv_cool = Convert.ToString(nv);
+            FolderBrowserDialog dialog_cartella = new FolderBrowserDialog();
+            if (dialog_cartella.ShowDialog() == DialogResult.OK)
+            {
+                folder_path = dialog_cartella.SelectedPath;
+            }
 
-            string csv_dateAcquisto = string.Join(",", dataAcquisto);
-            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-dateAcquisto.csv", csv_dateAcquisto);
+            using (var streamWriterticker = new StreamWriter(folder_path + "\\data-ticker.csv"))
+            using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
+            {
+                csvWriter.WriteRecords(ticker);
+            }
 
-            string csv_prezzoAcquisto = string.Join(",", prezzoAcquisto);
-            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-prezzoAcquisto.csv", csv_prezzoAcquisto);
+            using (var streamWriterdate = new StreamWriter(folder_path + "\\data-dateAcquisto.csv"))
+            using (var csvWriter = new CsvWriter(streamWriterdate, CultureInfo.InvariantCulture))
+            {
+                csvWriter.WriteRecords(dataAcquisto);
+            }
 
-            string csv_nv = string.Join(",", nv);
-            File.WriteAllText("C:\\Users\\Tec_Inf_01\\Desktop\\Stox-SimWallet\\data-nv.csv", csv_nv);
+            using (var streamwriterprezzo = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
+            using (var csvWriter = new CsvWriter(streamwriterprezzo, CultureInfo.InvariantCulture))
+            {
+                csvWriter.WriteRecords(prezzoAcquisto);
+            }
+
+            using (var streamwriternv = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
+            using (var csvWriter = new CsvWriter(streamwriternv, CultureInfo.InvariantCulture))
+            {
+                csvWriter.WriteRecords(nv_cool);
+            }
+
+            Application.Exit();
         }
     }
 }

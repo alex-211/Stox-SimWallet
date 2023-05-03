@@ -43,6 +43,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DebugPage = new System.Windows.Forms.TabPage();
             this.LSTdebug = new System.Windows.Forms.ListBox();
+            this.BTclosing = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.DebugPage.SuspendLayout();
@@ -62,6 +63,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.BTclosing);
             this.tabPage1.Controls.Add(this.CBrequest);
             this.tabPage1.Controls.Add(this.BTrequest);
             this.tabPage1.Controls.Add(this.listView);
@@ -177,6 +179,16 @@
             this.LSTdebug.Size = new System.Drawing.Size(775, 381);
             this.LSTdebug.TabIndex = 0;
             // 
+            // BTclosing
+            // 
+            this.BTclosing.Location = new System.Drawing.Point(659, 371);
+            this.BTclosing.Name = "BTclosing";
+            this.BTclosing.Size = new System.Drawing.Size(125, 23);
+            this.BTclosing.TabIndex = 3;
+            this.BTclosing.Text = "Chiudi e salva";
+            this.BTclosing.UseVisualStyleBackColor = true;
+            this.BTclosing.Click += new System.EventHandler(this.BTclosing_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -213,6 +225,7 @@
         private System.Windows.Forms.ColumnHeader ColLWVolume;
         private System.Windows.Forms.ComboBox CBrequest;
         private System.Windows.Forms.Button BTrequest;
+        private System.Windows.Forms.Button BTclosing;
     }
 }
 
