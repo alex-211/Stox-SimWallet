@@ -121,3 +121,4 @@ C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.Gene
 C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.CoreCompileInputs.cache
 C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe
 C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.login.resources

@@ -115,28 +115,62 @@ namespace Stox
             using (var streamWriterticker = new StreamWriter(folder_path + "\\data-ticker.csv"))
             using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
             {
-                csvWriter.WriteRecords(ticker);
+                if (ticker != null)
+                {
+                    for (int i = 0; i < nv; i++)
+                    {
+                        csvWriter.WriteRecords(ticker[i]);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Non hai aggiunto nessun ticker ai tuoi salvati");
+                }
             }
 
             using (var streamWriterdate = new StreamWriter(folder_path + "\\data-dateAcquisto.csv"))
             using (var csvWriter = new CsvWriter(streamWriterdate, CultureInfo.InvariantCulture))
             {
-                csvWriter.WriteRecords(dataAcquisto);
+                if (dataAcquisto != null)
+                {
+                    for (int i = 0; i < nv; i++)
+                    {
+                        csvWriter.WriteRecords(Convert.ToString(dataAcquisto[i]));
+                        // mo come cazzo traduco da stringa a data per leggere il dato, non si sà, però sarà un problema x un altro giorno
+
+                    }
+                }
             }
 
             using (var streamwriterprezzo = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
             using (var csvWriter = new CsvWriter(streamwriterprezzo, CultureInfo.InvariantCulture))
             {
-                csvWriter.WriteRecords(prezzoAcquisto);
+                if (prezzoAcquisto != null)
+                {
+                    for (int i = 0; i < nv; i++)
+                    {
+                        csvWriter.WriteRecords(Convert.ToString(prezzoAcquisto[i]));
+                    }
+                }
             }
 
             using (var streamwriternv = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
             using (var csvWriter = new CsvWriter(streamwriternv, CultureInfo.InvariantCulture))
             {
-                csvWriter.WriteRecords(nv_cool);
+                if (nv_cool != null)
+                {
+                    int i = 0;
+                    csvWriter.WriteRecord(nv_cool[i]);
+                    /*Spiegazione di questo abominio sgorbio della natura: perchè cazzo ci sta un indicatore di index su una variabile?
+                     Perchè in teoria il metodo WriteRecord sarebbe fatto per i dati singoli, AKA le variabili, però sto stronzo pensa
+                    comunque di essere il metodo WriteRecords (plurale) quindi senza indicatore di index mi tira una eccezzine di livelli
+                    clamorosi e mi dice con quel suo tono da paraculo demmerda: DiD yOu aCcIdenTaLlY cAALl GetRecord oR WriteRecord which 
+                    acts on a single record instead of calling GetRecords or WriteRecords which acts on a list of records?
+                    NO STRONZETTO L'HO FATTO APPOSTA A CHIAMARE WriteRecord SEI TU STUPIDO CHE PENSI CHE UNA VARIABILE SIA UN ARRAY*/
+                }
             }
 
-            Application.Exit();
+            Application.Exit(); // necessario?
         }
     }
 }
