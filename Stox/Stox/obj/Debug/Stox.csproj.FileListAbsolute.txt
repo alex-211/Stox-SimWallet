@@ -12,7 +12,6 @@ C:\Users\utente\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.exe.config
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.exe
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\Stox.pdb
-C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\CsvHelper.dll
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\Microsoft.Bcl.HashCode.dll
 C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\System.Buffers.dll

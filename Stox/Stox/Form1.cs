@@ -1,4 +1,6 @@
 ﻿// Alessandro Agus & Alessandro Porpiglia (3AINF) 2023
+// movtep-3wovsy-fYmdos
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,11 +25,14 @@ namespace Stox
     public partial class Form1 : Form
     {
         // AGUS NON TOGLIERE PUBLIC CHE SE NO SI ROMPE IL FORM2!! 
-        public const int maxv = 100;
-        public string[] ticker = new string[maxv];
-        public DateTime[] dataAcquisto = new DateTime[maxv];
-        public float[] prezzoAcquisto = new float[maxv];
+        public const int MAXV = 100;
+        public string[] ticker = new string[MAXV];
+        public DateTime[] dataAcquisto = new DateTime[MAXV];
+        public float[] prezzoAcquisto = new float[MAXV];
         public int nv = 0;
+
+        public const int nColTicker = 7;
+        public string[] colTicker = { "Open", "High", "Low", "Close", "Adj Close", "Volume", "Differenza" };
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +40,15 @@ namespace Stox
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Si può togliere questa function?
+            dgvTicker.ColumnCount = nColTicker;
+            for(int i = 0; i < nColTicker; i++)
+            {
+                dgvTicker.Columns[i].HeaderText = colTicker[i];
+            }
+            for (int i = 0; i < nv;  i++) 
+            {
+                CBrequest.Items.Add(ticker[i]);
+            }
         }
 
         // creates a class that splits the csv data 
@@ -54,6 +67,21 @@ namespace Stox
 
         private void BTrequest_Click(object sender, EventArgs e)
         {
+            float differnza;
+            int pos = -1;
+            for(int i = 0; i < nv; i++)
+            {
+                if (ticker[i] == CBrequest.Text)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            if (pos == -1)
+            {
+                MessageBox.Show("ticker non inserito");
+                return;
+            }
             // Ottieni data di oggi e convertila in unix timestamp per usarla nella query di Yahoo -- Spiegazione dettagliata su commit di GitHub
             DateTime today = DateTime.Now;
             DateTime yesterday = DateTime.Now.AddDays(-1);
@@ -65,29 +93,31 @@ namespace Stox
 
             // Create a web client to request the CSV data
             var client = new WebClient();
-            var DataStream = client.OpenRead("https://query1.finance.yahoo.com/v7/finance/download/"+CBrequest.Text+"?period1=" + period1 + "&period2="+ period2 +"&interval=1d&events=history&includeAdjustedClose=true");
+            var DataStream = client.OpenRead("https://query1.finance.yahoo.com/v7/finance/download/" + CBrequest.Text + "?period1=" + period1 + "&period2="+ period2 +"&interval=1d&events=history&includeAdjustedClose=true");
+            var DataStream_Acquisto = client.OpenRead("https://query1.finance.yahoo.com/v7/finance/download/" + CBrequest.Text + "?period1=" + period1 + "&period2=" + period2 + "&interval=1d&events=history&includeAdjustedClose=true");
+
 
             // Create a reader for CSVhelper
             var reader = new CsvReader(new StreamReader(DataStream), CultureInfo.InvariantCulture);
 
             using (reader)
             {
-                // stores the splitted data in the appl variable
-                var appl = reader.GetRecords<splitter>().ToList();
+                // stores the splitted data in the tik variable
+                var tik = reader.GetRecords<splitter>().ToList();
 
-                foreach (var record in appl)
+                foreach (var record in tik)
                 {
                     //visualizzazione debug 'listbox'
                     LSTdebug.Items.Add(record.Date + " " + record.Open + " " + record.High + " " + record.Low + " " + record.Close + " " + record.Adj_close + " " + record.Volume);
 
                     //Creazione tabella 'listview' *migliorabile -- metodo archiviato, in pausa. Proviamo un DataGridView (30-3-23)
-                    ListViewItem item = new ListViewItem(record.Date);
-                    item.SubItems.Add(record.Open);
+                    ListViewItem item = new ListViewItem(record.Open);
                     item.SubItems.Add(record.High);
                     item.SubItems.Add(record.Low);
                     item.SubItems.Add(record.Close);
                     item.SubItems.Add(record.Adj_close);
                     item.SubItems.Add(record.Volume);
+                    item.SubItems.Add(prezzoAcquisto[pos] - Convert.ToSingle( record.Close));
                     listView.Items.Add(item);
                 }
 
@@ -112,65 +142,72 @@ namespace Stox
                 folder_path = dialog_cartella.SelectedPath;
             }
 
-            using (var streamWriterticker = new StreamWriter(folder_path + "\\data-ticker.csv"))
-            using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
+            if (folder_path != "")
             {
-                if (ticker != null)
+                using (var streamWriterticker = new StreamWriter(folder_path + "\\data-ticker.csv"))
+                using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
                 {
-                    for (int i = 0; i < nv; i++)
+                    if (ticker != null)
                     {
-                        csvWriter.WriteRecords(ticker[i]);
+                        for (int i = 0; i < nv; i++)
+                        {
+                            csvWriter.WriteRecords(ticker[i]);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Non hai aggiunto nessun ticker ai tuoi salvati");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Non hai aggiunto nessun ticker ai tuoi salvati");
-                }
-            }
 
-            using (var streamWriterdate = new StreamWriter(folder_path + "\\data-dateAcquisto.csv"))
-            using (var csvWriter = new CsvWriter(streamWriterdate, CultureInfo.InvariantCulture))
-            {
-                if (dataAcquisto != null)
+                using (var streamWriterdate = new StreamWriter(folder_path + "\\data-dateAcquisto.csv"))
+                using (var csvWriter = new CsvWriter(streamWriterdate, CultureInfo.InvariantCulture))
                 {
-                    for (int i = 0; i < nv; i++)
+                    if (dataAcquisto != null)
                     {
-                        csvWriter.WriteRecords(Convert.ToString(dataAcquisto[i]));
-                        // mo come cazzo traduco da stringa a data per leggere il dato, non si sà, però sarà un problema x un altro giorno
+                        for (int i = 0; i < nv; i++)
+                        {
+                            csvWriter.WriteRecords(Convert.ToString(dataAcquisto[i]));
+                            // mo come cazzo traduco da stringa a data per leggere il dato, non si sà, però sarà un problema x un altro giorno
 
+                        }
                     }
                 }
-            }
 
-            using (var streamwriterprezzo = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
-            using (var csvWriter = new CsvWriter(streamwriterprezzo, CultureInfo.InvariantCulture))
-            {
-                if (prezzoAcquisto != null)
+                using (var streamwriterprezzo = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
+                using (var csvWriter = new CsvWriter(streamwriterprezzo, CultureInfo.InvariantCulture))
                 {
-                    for (int i = 0; i < nv; i++)
+                    if (prezzoAcquisto != null)
                     {
-                        csvWriter.WriteRecords(Convert.ToString(prezzoAcquisto[i]));
+                        for (int i = 0; i < nv; i++)
+                        {
+                            csvWriter.WriteRecords(Convert.ToString(prezzoAcquisto[i]));
+                        }
                     }
                 }
-            }
 
-            using (var streamwriternv = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
-            using (var csvWriter = new CsvWriter(streamwriternv, CultureInfo.InvariantCulture))
-            {
-                if (nv_cool != null)
+                using (var streamwriternv = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
+                using (var csvWriter = new CsvWriter(streamwriternv, CultureInfo.InvariantCulture))
                 {
-                    int i = 0;
-                    csvWriter.WriteRecord(nv_cool[i]);
-                    /*Spiegazione di questo abominio sgorbio della natura: perchè cazzo ci sta un indicatore di index su una variabile?
-                     Perchè in teoria il metodo WriteRecord sarebbe fatto per i dati singoli, AKA le variabili, però sto stronzo pensa
-                    comunque di essere il metodo WriteRecords (plurale) quindi senza indicatore di index mi tira una eccezzine di livelli
-                    clamorosi e mi dice con quel suo tono da paraculo demmerda: DiD yOu aCcIdenTaLlY cAALl GetRecord oR WriteRecord which 
-                    acts on a single record instead of calling GetRecords or WriteRecords which acts on a list of records?
-                    NO STRONZETTO L'HO FATTO APPOSTA A CHIAMARE WriteRecord SEI TU STUPIDO CHE PENSI CHE UNA VARIABILE SIA UN ARRAY*/
+                    if (nv_cool != null)
+                    {
+                        int i = 0;
+                        csvWriter.WriteRecord(nv_cool[i]);
+                        /*Spiegazione di questo abominio sgorbio della natura: perchè cazzo ci sta un indicatore di index su una variabile?
+                         Perchè in teoria il metodo WriteRecord sarebbe fatto per i dati singoli, AKA le variabili, però sto stronzo pensa
+                        comunque di essere il metodo WriteRecords (plurale) quindi senza indicatore di index mi tira una eccezzine di livelli
+                        clamorosi e mi dice con quel suo tono da paraculo demmerda: DiD yOu aCcIdenTaLlY cAALl GetRecord oR WriteRecord which 
+                        acts on a single record instead of calling GetRecords or WriteRecords which acts on a list of records?
+                        NO STRONZETTO L'HO FATTO APPOSTA A CHIAMARE WriteRecord SEI TU STUPIDO CHE PENSI CHE UNA VARIABILE SIA UN ARRAY*/
+                    }
                 }
-            }
 
-            Application.Exit(); // necessario?
+                Application.Exit(); // necessario?
+            }
+            else
+            {
+                MessageBox.Show("Operazione annullata, i dati non sono stati salvati");
+            }
         }
     }
 }
