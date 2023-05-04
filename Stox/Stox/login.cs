@@ -35,9 +35,7 @@ namespace Stox
         }
 
         private void btAggiungi_Click(object sender, EventArgs e)
-        {
-            // per ora si NON si controlla la validità del dato ticker, MA verrà agginto
-            
+        {   
             if (float.TryParse(TXTprezzoAcquisto.Text, out form1.prezzoAcquisto[form1.nv])==false)
             {
                 MessageBox.Show("Sono ammessi solo numeri nel dato 'Prezzo acquisto'");
@@ -70,7 +68,7 @@ namespace Stox
             string confronto_downloadPath = "C:\\Stox-Wallet";
             ChromeOptions options = new ChromeOptions();
             options.AddUserProfilePreference("download.default_directory", "C:\\Stox-wallet");
-            using (IWebDriver driver = new ChromeDriver(options)) 
+            using (IWebDriver driver = new ChromeDriver(options)) // eccezzione, manca un componente sulla mia macchina
             {
                 driver.Navigate().GoToUrl("https://www.nasdaq.com/market-activity/stocks/screener");
                 IWebElement download_button = driver.FindElement(By.ClassName("nasdaq-screener__form-button--download ns-download-1"));
@@ -81,9 +79,19 @@ namespace Stox
             using (StreamReader reader = new StreamReader(confronto_downloadPath))
             using (CsvReader csvReader = new CsvReader((IParser)reader)) // necessario cast esplicito per qualche ragione
             {
-                // da finire
+                List<nasdaq_splitter> nasdaq_list = new List<nasdaq_splitter>();
+                // dopo aver provato altri metodi, mi arrendo per usare quello di ChatGPT
+                while (csvReader.Read()) 
+                {
+                    nasdaq_splitter nasdaq_reader = csvReader.GetRecord<nasdaq_splitter>();
+                    nasdaq_list.Add(nasdaq_reader);
+                }
             }
             
+        }
+        public class nasdaq_splitter
+        {
+            public string Symbol { get; set; }
         }
     }
 }

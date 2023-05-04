@@ -52,7 +52,7 @@ namespace Stox
         }
 
         // creates a class that splits the csv data 
-        public class splitter
+        public class splitter1
         {
             public string Date { get; set; }
             public string Open { get; set; }
@@ -103,7 +103,7 @@ namespace Stox
             using (reader)
             {
                 // stores the splitted data in the tik variable
-                var tik = reader.GetRecords<splitter>().ToList();
+                var tik = reader.GetRecords<splitter1>().ToList();
 
                 foreach (var record in tik)
                 {
@@ -117,7 +117,7 @@ namespace Stox
                     item.SubItems.Add(record.Close);
                     item.SubItems.Add(record.Adj_close);
                     item.SubItems.Add(record.Volume);
-                    item.SubItems.Add(prezzoAcquisto[pos] - Convert.ToSingle( record.Close));
+                    //item.SubItems.Add(prezzoAcquisto[pos] - Convert.ToSingle(record.Close)); //errore da fixare
                     listView.Items.Add(item);
                 }
 

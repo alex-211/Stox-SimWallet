@@ -121,3 +121,8 @@ C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.Core
 C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe
 C:\Users\Utente\Source\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
 C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.login.resources
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\OpenQA.Selenium.Winium.dll
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\WebDriver.dll
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\OpenQA.Selenium.Winium.pdb
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\bin\Debug\WebDriver.xml
+C:\Users\aless\OneDrive\Desktop\Repos\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe.config
