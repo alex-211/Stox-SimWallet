@@ -164,7 +164,7 @@
             this.Controls.Add(this.dtpInputData);
             this.Name = "login";
             this.Text = "Ciao!";
-            this.Load += new System.EventHandler(this.login_Load);
+            //this.Load += new System.EventHandler(this.login_LoadAsync);
             this.ResumeLayout(false);
             this.PerformLayout();
 

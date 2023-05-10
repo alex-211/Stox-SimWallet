@@ -1,4 +1,4 @@
-﻿// Alessandro Agus & Alessandro Porpiglia (3AINF) 2023
+﻿ // Alessandro Agus & Alessandro Porpiglia (3AINF) 2023
 // movtep-3wovsy-fYmdos
 
 using System;
@@ -40,6 +40,15 @@ namespace Stox
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Impedisci all'utente di aggiungere e cancellare righe
+            dgvTicker.AllowUserToAddRows = false;
+            dgvTicker.AllowUserToDeleteRows = false;
+            // Impedisci all'utente di modificare le celle
+            dgvTicker.EditMode = DataGridViewEditMode.EditProgrammatically;
+            // Ridimensiona automaticamente le celle della griglia in base al loro contenuto
+            dgvTicker.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            // Imposta la larghezza dei titoli delle righe a 130 pixel
+            dgvTicker.RowHeadersWidth = 130;
             dgvTicker.ColumnCount = nColTicker;
             for(int i = 0; i < nColTicker; i++)
             {
