@@ -8,12 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-// Chrome fiddler, dato che il bottone sul sito di Nasdaq non ha un link di download diretto, ma usa una richiesta AJAX o JS quindi per scaricare il csv per fare il confronto, uso questa libreria
 using System.IO;
+using System.Net;
 using CsvHelper;
 using CsvHelper.Configuration.Attributes;
 using System.Globalization;
@@ -48,26 +44,30 @@ namespace Stox
                 MessageBox.Show("Il titolo ticker non può essere vuoto ed il ticker può avere massimo 5 caratteri");
                 return; 
             }
-            for (int i = 0; i < nasdaq_list.Count; i++)
+
+            var client = new WebClient();
+            try
             {
-                
-                if (txtInputTitolo.Text == nasdaq_list[i].Symbol)
-                {
-                    break;
-                }
-                else if (i == nasdaq_list.Count - 1)
-                {
-                    MessageBox.Show("Il ticker non è stato trovato nel database di NASDAQ");
-                    return;
-                }
+                DateTime today = DateTime.Now;
+                DateTime yesterday = DateTime.Now.AddDays(-1);
+                int period1 = (int)yesterday.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                int period2 = (int)today.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                string response = client.DownloadString("https://query1.finance.yahoo.com/v7/finance/download/" + txtInputTitolo.Text + "?period1=" + period1 + "&period2=" + period2 + "&interval=1d&events=history&includeAdjustedClose=true");
             }
+            catch
+            {
+                MessageBox.Show("Suca");
+                return; // Il sito non esiste
+            }
+
+
             DateTime dataMin = new DateTime(1970 - 01 - 01);
             if (dtpInputData.Value < dataMin)
             {
                 MessageBox.Show("Il titolo non può esser stato comprato prima del 01/01/1970"); 
                 return;
             }
-            form1.ticker[form1.nv] = Convert.ToString(txtInputTitolo.Text);
+            form1.ticker[form1.nv] = txtInputTitolo.Text;
             form1.dataAcquisto[form1.nv] = dtpInputData.Value;
             form1.nv++;
         }
@@ -78,36 +78,6 @@ namespace Stox
             form1.ShowDialog();
         }
 
-        private async Task login_LoadAsync(object sender, EventArgs e)
-        {
-            string confronto_downloadPath = "C:\\Stox-Wallet";
-            string chrome_path = "C:\\Stox-Wallet";
-            ChromeOptions options = new ChromeOptions();
-            options.AddUserProfilePreference("download.default_directory", "C:\\Stox-wallet");
-            options.AddArgument("--headless");
-            using (IWebDriver driver = new ChromeDriver(chrome_path, options)) 
-            {
-
-                driver.Navigate().GoToUrl("https://www.nasdaq.com/market-activity/stocks/screener");
-                await Task.Delay(1000);
-                IWebElement download_button = driver.FindElement(By.CssSelector(".nasdaq-screener__form-button--download.ns-download-1"));
-                download_button.Click();
-                driver.Quit();
-            }
-
-            using (StreamReader reader = new StreamReader(confronto_downloadPath))
-            using (CsvReader csvReader = new CsvReader((IParser)reader)) // necessario cast esplicito per qualche ragione
-            {
-                
-                // dopo aver provato altri metodi, mi arrendo per usare quello di ChatGPT
-                while (csvReader.Read()) 
-                {
-                    nasdaq_splitter nasdaq_reader = csvReader.GetRecord<nasdaq_splitter>();
-                    nasdaq_list.Add(nasdaq_reader);
-                }
-            }
-            
-        }
         public class nasdaq_splitter
         {
             public string Symbol { get; set; }

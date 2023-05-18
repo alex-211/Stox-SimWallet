@@ -16,7 +16,7 @@ using CsvHelper;
 using System.Net;
 using System.IO;
 using System.Globalization;
-
+using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes; // Questo serve a dare dei nomi custom agli header
 
 
@@ -40,25 +40,32 @@ namespace Stox
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Impedisci all'utente di aggiungere e cancellare righe
-            dgvTicker.AllowUserToAddRows = false;
-            dgvTicker.AllowUserToDeleteRows = false;
-            // Impedisci all'utente di modificare le celle
-            dgvTicker.EditMode = DataGridViewEditMode.EditProgrammatically;
-            // Ridimensiona automaticamente le celle della griglia in base al loro contenuto
-            dgvTicker.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
-            // Imposta la larghezza dei titoli delle righe a 130 pixel
-            dgvTicker.RowHeadersWidth = 130;
-            dgvTicker.ColumnCount = nColTicker;
-            for(int i = 0; i < nColTicker; i++)
+            // Create a DataTable
+            DataTable dataTable = new DataTable();
+
+            // Add columns to the DataTable
+            for (int i = 0; i < nColTicker; i++)
             {
-                dgvTicker.Columns[i].HeaderText = colTicker[i];
+                dataTable.Columns.Add(colTicker[i]);
             }
-            for (int i = 0; i < nv;  i++) 
+
+            // Add rows to the DataTable
+            for (int i = 0; i < nv; i++)
             {
-                CBrequest.Items.Add(ticker[i]);
+                DataRow row = dataTable.NewRow();
+                row["Open"] = ticker[i];  // Assuming "Open" is the first column in colTicker
+                                          // Set other column values for the row if needed
+                dataTable.Rows.Add(row);
             }
+
+            // Set the DataTable as the data source for the DataGridView
+            dgvTicker.DataSource = dataTable;
+
+            // Optional: Auto-resize the columns to fit the content
+            dgvTicker.AutoResizeColumns();
         }
+
+
 
         // creates a class that splits the csv data 
         public class splitter1
@@ -131,12 +138,30 @@ namespace Stox
                 }
 
             }
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
+
+        public class TickerData
+        {
+            public string Ticker { get; set; }
+            public DateTime DataAcquisto { get; set; }
+            public float PrezzoAcquisto { get; set; }
+        }
+
+        public class CustomDateTimeConverter : DateTimeConverter
+        {
+            public CustomDateTimeConverter()
+            {
+                Formats = new[] { "yyyy-MM-dd" };
+            }
+        }
+
+
 
         private void BTclosing_Click(object sender, EventArgs e)
         {
@@ -153,65 +178,35 @@ namespace Stox
 
             if (folder_path != "")
             {
+                using (var streamWriter = new StreamWriter(folder_path + "\\data-ticker.csv"))
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                {
+                    csvWriter.WriteRecords(ticker.Take(nv).Select(t => new TickerData { Ticker = t }));
+                }
+
+                // Save dataAcquisto to CSV
                 using (var streamWriterticker = new StreamWriter(folder_path + "\\data-ticker.csv"))
                 using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
                 {
-                    if (ticker != null)
-                    {
-                        for (int i = 0; i < nv; i++)
-                        {
-                            csvWriter.WriteRecords(ticker[i]);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Non hai aggiunto nessun ticker ai tuoi salvati");
-                    }
+                    var customDateTimeConverter = new CustomDateTimeConverter();
+                    var options = csvWriter.Context.TypeConverterOptionsCache.GetOptions<DateTime>();
+                    options.TypeConverter = customDateTimeConverter;
                 }
 
-                using (var streamWriterdate = new StreamWriter(folder_path + "\\data-dateAcquisto.csv"))
-                using (var csvWriter = new CsvWriter(streamWriterdate, CultureInfo.InvariantCulture))
+                // Save prezzoAcquisto to CSV
+                using (var streamWriter = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
                 {
-                    if (dataAcquisto != null)
-                    {
-                        for (int i = 0; i < nv; i++)
-                        {
-                            csvWriter.WriteRecords(Convert.ToString(dataAcquisto[i]));
-                            // mo come cazzo traduco da stringa a data per leggere il dato, non si sà, però sarà un problema x un altro giorno
-
-                        }
-                    }
+                    csvWriter.WriteRecords(prezzoAcquisto.Take(nv).Select(p => new TickerData { PrezzoAcquisto = p }));
                 }
 
-                using (var streamwriterprezzo = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
-                using (var csvWriter = new CsvWriter(streamwriterprezzo, CultureInfo.InvariantCulture))
+                // Save nv to CSV
+                using (var streamWriter = new StreamWriter(folder_path + "\\data-nv.csv"))
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
                 {
-                    if (prezzoAcquisto != null)
-                    {
-                        for (int i = 0; i < nv; i++)
-                        {
-                            csvWriter.WriteRecords(Convert.ToString(prezzoAcquisto[i]));
-                        }
-                    }
+                    csvWriter.WriteRecords(new List<TickerData> { new TickerData { Ticker = nv.ToString() } });
                 }
 
-                using (var streamwriternv = new StreamWriter(folder_path + "\\data-prezzoAcquisto.csv"))
-                using (var csvWriter = new CsvWriter(streamwriternv, CultureInfo.InvariantCulture))
-                {
-                    if (nv_cool != null)
-                    {
-                        int i = 0;
-                        csvWriter.WriteRecord(nv_cool[i]);
-                        /*Spiegazione di questo abominio sgorbio della natura: perchè cazzo ci sta un indicatore di index su una variabile?
-                         Perchè in teoria il metodo WriteRecord sarebbe fatto per i dati singoli, AKA le variabili, però sto stronzo pensa
-                        comunque di essere il metodo WriteRecords (plurale) quindi senza indicatore di index mi tira una eccezzine di livelli
-                        clamorosi e mi dice con quel suo tono da paraculo demmerda: DiD yOu aCcIdenTaLlY cAALl GetRecord oR WriteRecord which 
-                        acts on a single record instead of calling GetRecords or WriteRecords which acts on a list of records?
-                        NO STRONZETTO L'HO FATTO APPOSTA A CHIAMARE WriteRecord SEI TU STUPIDO CHE PENSI CHE UNA VARIABILE SIA UN ARRAY*/
-                    }
-                }
-
-                Application.Exit(); // necessario?
             }
             else
             {

@@ -155,3 +155,6 @@ C:\Users\Utente\Desktop\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.csproj.CoreCompi
 C:\Users\Utente\Desktop\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.exe
 C:\Users\Utente\Desktop\Stox-SimWallet\Stox\Stox\obj\Debug\Stox.pdb
 C:\Users\Utente\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\WebDriver.Support.dll
+C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\CsvHelper.dll
+C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\WebDriver.dll
+C:\Users\Tec_Inf_01\Desktop\Stox-SimWallet\Stox\Stox\bin\Debug\WebDriver.Support.dll

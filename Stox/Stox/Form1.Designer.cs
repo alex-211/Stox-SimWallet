@@ -42,14 +42,14 @@
             this.ColLWVolume = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColLWDifferenza = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dgvTicker = new System.Windows.Forms.DataGridView();
             this.DebugPage = new System.Windows.Forms.TabPage();
             this.LSTdebug = new System.Windows.Forms.ListBox();
-            this.dgvTicker = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.DebugPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicker)).BeginInit();
+            this.DebugPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -170,6 +170,15 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // dgvTicker
+            // 
+            this.dgvTicker.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTicker.Location = new System.Drawing.Point(6, 6);
+            this.dgvTicker.Name = "dgvTicker";
+            this.dgvTicker.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dgvTicker.Size = new System.Drawing.Size(780, 264);
+            this.dgvTicker.TabIndex = 0;
+            // 
             // DebugPage
             // 
             this.DebugPage.Controls.Add(this.LSTdebug);
@@ -188,14 +197,6 @@
             this.LSTdebug.Size = new System.Drawing.Size(775, 381);
             this.LSTdebug.TabIndex = 0;
             // 
-            // dgvTicker
-            // 
-            this.dgvTicker.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTicker.Location = new System.Drawing.Point(6, 6);
-            this.dgvTicker.Name = "dgvTicker";
-            this.dgvTicker.Size = new System.Drawing.Size(780, 264);
-            this.dgvTicker.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,8 +212,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.DebugPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicker)).EndInit();
+            this.DebugPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
