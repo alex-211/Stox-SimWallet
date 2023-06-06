@@ -1,5 +1,4 @@
 ﻿ // Alessandro Agus & Alessandro Porpiglia (3AINF) 2023
-// movtep-3wovsy-fYmdos
 
 using System;
 using System.Collections.Generic;
@@ -153,15 +152,17 @@ namespace Stox
             public float PrezzoAcquisto { get; set; }
         }
 
+
+
         public class CustomDateTimeConverter : DateTimeConverter
         {
+            private string[] Formats;
+
             public CustomDateTimeConverter()
             {
                 Formats = new[] { "yyyy-MM-dd" };
             }
         }
-
-
 
         private void BTclosing_Click(object sender, EventArgs e)
         {
@@ -189,8 +190,10 @@ namespace Stox
                 using (var csvWriter = new CsvWriter(streamWriterticker, CultureInfo.InvariantCulture))
                 {
                     var customDateTimeConverter = new CustomDateTimeConverter();
-                    var options = csvWriter.Context.TypeConverterOptionsCache.GetOptions<DateTime>();
+                    var options = csvWriter.Context.TypeConverterOptionsCache.GetOptions(typeof(DateTime));
                     options.TypeConverter = customDateTimeConverter;
+
+                    csvWriter.WriteRecords(ticker.Take(nv).Select(t => new TickerData { Ticker = t }));
                 }
 
                 // Save prezzoAcquisto to CSV
