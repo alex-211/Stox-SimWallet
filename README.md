@@ -1,3 +1,4 @@
+## Dopo 3 mesi di inatività e l'inizio del nuovo anno scolastico, il progetto viene archiviato
 # Analisi funzionale per un'applicazione per la gestione del portafoglio titoli di un'investirore individuale
 Versione 1 - Massimo Antonellini, 2021
 
